@@ -1,13 +1,7 @@
-typedef struct Vector2 
-{
-    int x, y;
-} Vector2;
+#ifndef _MAZE_H
+#define _MAZE_H
 
-typedef struct MazeData 
-{
-    unsigned int* Maze;
-    Vector2 Start, End;
-} MazeData;
+#include "structs.h"
 
 void BlockToString(unsigned int block, char* str);
 
@@ -20,3 +14,5 @@ void WriteMaze(MazeData* mazeData);
 char GetMazeCell(unsigned int* Maze, int xPos, int yPos);
 
 void SetMazeCell(unsigned int* Maze, int xPos, int yPos, char value);
+
+#endif

@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "Maze.h"
 
 void BlockToString(unsigned int block, char* str)

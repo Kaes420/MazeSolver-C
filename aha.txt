@@ -4,6 +4,7 @@
 valgrind
 
 valgrind --tool=massif ./solver maze.txt
+ms_print massif.out.<PID>
 
 git add .
 git commit -m "aha spoko"
