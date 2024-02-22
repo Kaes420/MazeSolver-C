@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char* BlockToString(unsigned int block)
+void BlockToString(unsigned int block, char* str)
 {
     unsigned int value = block;
     unsigned int binaryNum[32];
@@ -18,12 +18,8 @@ char* BlockToString(unsigned int block)
         i++;
     } 
     
-    char* str = malloc(32 * sizeof(char));
-    
     for(int i = 0; i < 32; i++)
         str[i] = '0' + binaryNum[32 - i - 1];
-
-    return str;
 }
 
 unsigned int StringToBlock(char* blockString)
@@ -48,11 +44,10 @@ char GetMazeCell(unsigned int* Maze, int xPos, int yPos)
     int block = inLinePos / 32;
     int inBlockPos = inLinePos - block * 32;
 
-    char* blockString = BlockToString(Maze[block]);
+    char blockString[32];
+    BlockToString(Maze[block], blockString);
 
     char ToReturn = blockString[inBlockPos];
-
-    free(blockString);
     
     return ToReturn;
 }
@@ -63,13 +58,12 @@ void SetMazeCell(unsigned int* Maze, int xPos, int yPos, char value)
     int block = inLinePos / 32;
     int inBlockPos = inLinePos - block * 32;
 
-    char* blockString = BlockToString(Maze[block]);
+    char blockString[32];
+    BlockToString(Maze[block], blockString);
 
     blockString[inBlockPos] = value;
 
     Maze[block] = StringToBlock(blockString);
-
-    free(blockString);
 }
 
 unsigned int* ReadMaze(char* filename)
