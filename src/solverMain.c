@@ -4,9 +4,11 @@
 
 int main(int argc, char** argv)
 {   
-    unsigned int* Maze = ReadMaze(argv[1]);
+    MazeData MazeData;
+    ReadMaze(argv[1], &MazeData);
 
-    WriteMaze(Maze);
+
+    //WriteMaze(&MazeData);
     
-    free(Maze);
+    free(MazeData.Maze);
 }

@@ -4,3 +4,7 @@
 valgrind
 
 valgrind --tool=massif ./solver maze.txt
+
+git add .
+git commit -m "aha spoko"
+git push -u orgin master

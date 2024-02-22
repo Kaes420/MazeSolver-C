@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "Maze.h"
 
 void BlockToString(unsigned int block, char* str)
 {
@@ -66,7 +67,7 @@ void SetMazeCell(unsigned int* Maze, int xPos, int yPos, char value)
     Maze[block] = StringToBlock(blockString);
 }
 
-unsigned int* ReadMaze(char* filename)
+void ReadMaze(char* filename, MazeData* mazeData)
 {
     unsigned int* Maze = malloc(32768 * sizeof(unsigned int));
 
@@ -85,7 +86,19 @@ unsigned int* ReadMaze(char* filename)
             y++;
             continue;
         }
-        else if (Head == ' ' || Head == 'P' || Head == 'K')
+        else if (Head == 'P')
+        {
+            mazeData->Start.x = x;
+            mazeData->Start.y = y;
+            SetMazeCell(Maze, x, y, '0');
+        }
+        else if (Head == 'K')
+        {
+            mazeData->End.x = x;
+            mazeData->End.y = y;
+            SetMazeCell(Maze, x, y, '0');
+        }
+        else if (Head == ' ')
         {
             SetMazeCell(Maze, x, y, '0');
         }
@@ -95,10 +108,10 @@ unsigned int* ReadMaze(char* filename)
     
     fclose(f);
     
-    return Maze;
+    mazeData->Maze = Maze;
 }
 
-void WriteMaze(unsigned int* Maze)
+void WriteMaze(MazeData* mazeData)
 {
     FILE* f = fopen("binaryMaze.txt", "w");
 
@@ -106,7 +119,7 @@ void WriteMaze(unsigned int* Maze)
     {
         for (int x = 0; x < 1024; x++)
         {
-            fprintf(f, "%c", GetMazeCell(Maze, x, y));
+            fprintf(f, "%c", GetMazeCell(mazeData->Maze, x, y));
         }
         fprintf(f, "\n");
     }
