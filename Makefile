@@ -1,2 +1,2 @@
 all:
-	gcc -Wall src/*.c -o solver
+	gcc -Wall src/*.c -o solver -lm
