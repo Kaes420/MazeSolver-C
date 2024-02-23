@@ -77,7 +77,39 @@ void deleteList(AstarNodeElem** head_ref)
     while (current != NULL) 
     {
         next = current->Next;
-        free(current->Node);
+        free(current);
+        current = next;
+    }
+   
+    *head_ref = NULL;
+}
+
+void smartDeleteList(AstarNodeElem** head_ref)
+{
+    AstarNodeElem* current = *head_ref;
+    AstarNodeElem* next;
+ 
+    while (current != NULL) 
+    {
+        next = current->Next;
+
+        if(current->Node != NULL)
+        {
+            AstarNodeElem* nullator = current->Next;
+
+            while (nullator != NULL)
+            {
+                if(nullator->Node == current->Node)
+                {
+                    nullator->Node = NULL;
+                }
+                nullator = nullator->Next;
+            }
+            
+            free(current->Node);
+            current->Node = NULL;
+        }
+
         free(current);
         current = next;
     }
@@ -160,13 +192,15 @@ void WritePath(AstarNode* startNode, AstarNode* endNode)
 	}
     AddFirst(&pathList, endNode);
 
+    AstarNodeElem* Next = pathList;
+
     FILE* file = fopen("path.txt", "w");
 
     Vector2 Dir; Dir.x = 0; Dir.y = 1;
-    while (pathList->Next != NULL)
+    while (Next->Next != NULL)
     {
-        int deltaX = pathList->Next->Node->Pos.x - pathList->Node->Pos.x;
-        int deltaY = pathList->Next->Node->Pos.y - pathList->Node->Pos.y;
+        int deltaX = Next->Next->Node->Pos.x - Next->Node->Pos.x;
+        int deltaY = Next->Next->Node->Pos.y - Next->Node->Pos.y;
 
         char str[10];
 
@@ -184,7 +218,7 @@ void WritePath(AstarNode* startNode, AstarNode* endNode)
         }
 
         fprintf(file, "%s", str);
-        pathList = pathList->Next;
+        Next = Next->Next;
     }
 
     fclose(file);
@@ -193,13 +227,13 @@ void WritePath(AstarNode* startNode, AstarNode* endNode)
 
 void AstarSolve(MazeData* mazeData)
 {
-    AstarNode StartNode;
-    StartNode.Pos = mazeData->Start;
-    StartNode.Walkable = true;
+    AstarNode* StartNode = malloc(sizeof(AstarNode));
+    StartNode->Pos = mazeData->Start;
+    StartNode->Walkable = true;
 
     AstarNodeElem* OpenSet   = NULL;
     AstarNodeElem* ClosedSet = NULL;
-    AddLast(&OpenSet, &StartNode);
+    AddLast(&OpenSet, StartNode);
     
     int openSetCount;
     while ((openSetCount = GetListCount(OpenSet)) > 0)
@@ -222,7 +256,7 @@ void AstarSolve(MazeData* mazeData)
 
         if(node->Pos.x == mazeData->End.x && node->Pos.y == mazeData->End.y)
         {
-            WritePath(&StartNode, node);
+            WritePath(StartNode, node);
             break;
         }
 
@@ -256,6 +290,6 @@ void AstarSolve(MazeData* mazeData)
         }
     }
 
-    deleteList(&OpenSet);
-    deleteList(&ClosedSet);
+    smartDeleteList(&OpenSet);
+    smartDeleteList(&ClosedSet);
 }
