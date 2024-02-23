@@ -22,9 +22,9 @@ Vector2 TurnLeft(Vector2 Dir)
 
 void DirToString(char* str, Vector2 Dir)
 {
-    if(Dir.x == 0 && Dir.y == 1)      strcpy(str, "down\n");
+    if(Dir.x == 0 && Dir.y == 1)      strcpy(str, "up\n");
     else if(Dir.x == 1 && Dir.y == 0) strcpy(str, "right\n");
-    else if(Dir.x == 0 && Dir.y ==-1) strcpy(str, "up\n");
+    else if(Dir.x == 0 && Dir.y ==-1) strcpy(str, "down\n");
     else if(Dir.x ==-1 && Dir.y == 0) strcpy(str, "left\n");
 }
 

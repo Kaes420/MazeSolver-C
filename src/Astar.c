@@ -17,57 +17,72 @@ int GetListCount(AstarNodeElem* list)
 
 void AddLast(AstarNodeElem** head_ref, AstarNode* new_data) 
 { 
-    //create a new node
     AstarNodeElem *newNode = malloc(sizeof(AstarNodeElem));
     newNode->Node = new_data;
     newNode->Next = NULL;
 
-    //if head is NULL, it is an empty list
     if(*head_ref == NULL)
-         *head_ref = newNode;
-    //Otherwise, find the last node and add the newNode
+        *head_ref = newNode;
     else
     {
         AstarNodeElem *lastNode = *head_ref;
 
-        //last node's next address will be NULL.
         while(lastNode->Next != NULL)
         {
             lastNode = lastNode->Next;
         }
 
-        //add the newNode at the end of the linked list
         lastNode->Next = newNode;
     }
 }
 
+void AddFirst(AstarNodeElem** head_ref, AstarNode* new_data)
+{
+    AstarNodeElem* new_node = malloc(sizeof(AstarNodeElem));
+    new_node->Node = new_data;
+    new_node->Next = (*head_ref);
+    (*head_ref) = new_node;
+}
+
 void delete(AstarNodeElem** head_ref, AstarNode* key) 
 { 
-    // Store head node 
     struct AstarNodeElem *temp = *head_ref, *prev; 
   
-    // If head node itself holds the key to be deleted 
-    if (temp != NULL && temp->Node == key) { 
-        *head_ref = temp->Next; // Changed head 
-        free(temp); // free old head 
+    if (temp != NULL && temp->Node == key) 
+    { 
+        *head_ref = temp->Next;
+        free(temp);
         return; 
     } 
   
-    // Search for the key to be deleted, keep track of the 
-    // previous node as we need to change 'prev->next' 
-    while (temp != NULL && temp->Node != key) { 
+    while (temp != NULL && temp->Node != key) 
+    { 
         prev = temp; 
         temp = temp->Next; 
     } 
   
-    // If key was not present in linked list 
     if (temp == NULL) 
         return; 
   
-    // Unlink the node from linked list 
     prev->Next = temp->Next; 
   
-    free(temp); // Free memory 
+    free(temp);
+}
+
+void deleteList(AstarNodeElem** head_ref)
+{
+    AstarNodeElem* current = *head_ref;
+    AstarNodeElem* next;
+ 
+    while (current != NULL) 
+    {
+        next = current->Next;
+        free(current->Node);
+        free(current);
+        current = next;
+    }
+   
+    *head_ref = NULL;
 }
 
 AstarNode* getNode(AstarNodeElem** head_ref, int index)
@@ -134,6 +149,48 @@ void getNeighbours(AstarNode* neighbours, AstarNode* node, MazeData* mazeData)
     }
 }
 
+void WritePath(AstarNode* startNode, AstarNode* endNode)
+{
+    AstarNodeElem* pathList = NULL;
+
+    while (endNode != startNode) 
+    {
+        AddFirst(&pathList, endNode);
+        endNode = endNode->Parent;
+	}
+    AddFirst(&pathList, endNode);
+
+    FILE* file = fopen("path.txt", "w");
+
+    Vector2 Dir; Dir.x = 0; Dir.y = 1;
+    while (pathList->Next != NULL)
+    {
+        int deltaX = pathList->Next->Node->Pos.x - pathList->Node->Pos.x;
+        int deltaY = pathList->Next->Node->Pos.y - pathList->Node->Pos.y;
+
+        char str[10];
+
+        if(Dir.x == deltaX && Dir.y == deltaY)
+        {
+            strcpy(str, "go\n");
+        }
+        else
+        {
+            Dir.x = deltaX; Dir.y = deltaY;
+            if(Dir.x == 0 && Dir.y == 1)      strcpy(str, "up\ngo\n");
+            else if(Dir.x == 1 && Dir.y == 0) strcpy(str, "right\ngo\n");
+            else if(Dir.x == 0 && Dir.y ==-1) strcpy(str, "down\ngo\n");
+            else if(Dir.x ==-1 && Dir.y == 0) strcpy(str, "left\ngo\n");
+        }
+
+        fprintf(file, "%s", str);
+        pathList = pathList->Next;
+    }
+
+    fclose(file);
+    deleteList(&pathList);
+}
+
 void AstarSolve(MazeData* mazeData)
 {
     AstarNode StartNode;
@@ -143,8 +200,6 @@ void AstarSolve(MazeData* mazeData)
     AstarNodeElem* OpenSet   = NULL;
     AstarNodeElem* ClosedSet = NULL;
     AddLast(&OpenSet, &StartNode);
-
-    printf("start\n");
     
     int openSetCount;
     while ((openSetCount = GetListCount(OpenSet)) > 0)
@@ -167,7 +222,7 @@ void AstarSolve(MazeData* mazeData)
 
         if(node->Pos.x == mazeData->End.x && node->Pos.y == mazeData->End.y)
         {
-            printf("less go\n");
+            WritePath(&StartNode, node);
             break;
         }
 
@@ -200,4 +255,7 @@ void AstarSolve(MazeData* mazeData)
             }
         }
     }
+
+    deleteList(&OpenSet);
+    deleteList(&ClosedSet);
 }
