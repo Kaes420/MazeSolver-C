@@ -11,8 +11,8 @@ void ReadMaze(char* filename, MazeData* mazeData);
 
 void WriteMaze(MazeData* mazeData);
 
-char GetMazeCell(unsigned int* Maze, int xPos, int yPos);
+char GetMazeCell(MazeData* mazeData, int xPos, int yPos);
 
-void SetMazeCell(unsigned int* Maze, int xPos, int yPos, char value);
+void SetMazeCell(MazeData* mazeData, int xPos, int yPos, char value);
 
 #endif

@@ -15,6 +15,7 @@ typedef struct Vector2
 typedef struct MazeData 
 {
     unsigned int* Maze;
+    int width, height;
     Vector2 Start, End;
 } MazeData;
 

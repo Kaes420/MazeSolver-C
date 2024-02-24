@@ -28,7 +28,7 @@ void DirToString(char* str, Vector2 Dir)
     else if(Dir.x ==-1 && Dir.y == 0) strcpy(str, "left\n");
 }
 
-void NextStep(MazeData* MazeData, FILE* file, Vector2* currentPos, Vector2* dir, bool Fill)
+void NextStep(MazeData* mazeData, FILE* file, Vector2* currentPos, Vector2* dir, bool Fill)
 {
     Vector2 rightDir = TurnRight(*dir);
     Vector2 FrontWall;
@@ -43,13 +43,13 @@ void NextStep(MazeData* MazeData, FILE* file, Vector2* currentPos, Vector2* dir,
     rightWallAfter.x = currentPos->x + rightDir.x - dir->x;
     rightWallAfter.y = currentPos->y + rightDir.y - dir->y;
     
-    char rightWallChar = rightWall.x > 0 && rightWall.y > 0 ? GetMazeCell(MazeData->Maze, rightWall.x, rightWall.y) : '1';
-    char FrontWallChar = FrontWall.x > 0 && FrontWall.y > 0 ? GetMazeCell(MazeData->Maze, FrontWall.x, FrontWall.y) : '1';
+    char rightWallChar = GetMazeCell(mazeData, rightWall.x, rightWall.y);
+    char FrontWallChar = GetMazeCell(mazeData, FrontWall.x, FrontWall.y);
+    char rightWallAfterChar = GetMazeCell(mazeData, rightWallAfter.x, rightWallAfter.y);
 
-    char rightWallAfterChar = rightWallAfter.x > 0 && rightWallAfter.y > 0 ? GetMazeCell(MazeData->Maze, rightWallAfter.x, rightWallAfter.y) : '1';
-
-    Vector2 PosBefore; PosBefore.x = currentPos->x; PosBefore.y = currentPos->y;
+    Vector2 PosBefore = *currentPos;
     bool go = false;
+
     if(rightWallChar == '0' && rightWallAfterChar == '1')
     {
         *dir = rightDir;
@@ -74,7 +74,7 @@ void NextStep(MazeData* MazeData, FILE* file, Vector2* currentPos, Vector2* dir,
         go = true;
     }
 
-    if(currentPos->x == MazeData->End.x && currentPos->y == MazeData->End.y)
+    if(currentPos->x == mazeData->End.x && currentPos->y == mazeData->End.y)
     {
         return;
     }        
@@ -86,10 +86,10 @@ void NextStep(MazeData* MazeData, FILE* file, Vector2* currentPos, Vector2* dir,
     Vector2 down = PosBefore;  down.y  -= 1;
     Vector2 left = PosBefore;  left.x  -= 1;
 
-    bool upCheck    = ((up.x > 0 && up.y > 0)       ? GetMazeCell(MazeData->Maze, up.x, up.y)       : '1') == '1';
-    bool rightCheck = ((right.x > 0 && right.y > 0) ? GetMazeCell(MazeData->Maze, right.x, right.y) : '1') == '1';
-    bool downCheck  = ((down.x > 0 && down.y > 0)   ? GetMazeCell(MazeData->Maze, down.x, down.y)   : '1') == '1';
-    bool leftCheck  = ((left.x > 0 && left.y > 0)   ? GetMazeCell(MazeData->Maze, left.x, left.y)   : '1') == '1';
+    bool upCheck    = GetMazeCell(mazeData, up.x, up.y) == '1';
+    bool rightCheck = GetMazeCell(mazeData, right.x, right.y) == '1';
+    bool downCheck  = GetMazeCell(mazeData, down.x, down.y) == '1';
+    bool leftCheck  = GetMazeCell(mazeData, left.x, left.y) == '1';
 
     int finalCheck = 0;
     if(upCheck    && !(up.x    == dir->x && up.y    == dir->y)) finalCheck++;
@@ -97,28 +97,28 @@ void NextStep(MazeData* MazeData, FILE* file, Vector2* currentPos, Vector2* dir,
     if(downCheck  && !(down.x  == dir->x && down.y  == dir->y)) finalCheck++;
     if(leftCheck  && !(left.x  == dir->x && left.y  == dir->y)) finalCheck++;
 
-    if(finalCheck == 3 && go && PosBefore.x > 0 && PosBefore.x <= 1023 && PosBefore.y > 0 && PosBefore.y <= 1023)
+    if(finalCheck == 3 && go)
     {
-        SetMazeCell(MazeData->Maze, PosBefore.x, PosBefore.y, '1');
+        SetMazeCell(mazeData, PosBefore.x, PosBefore.y, '1');
     }
 }
 
-void RightHandSolve(MazeData* MazeData)
+void DeadEndSolve(MazeData* mazeData)
 {
     FILE* file = fopen("path.txt", "w");
 
-    Vector2 CurrentPos = MazeData->Start;
+    Vector2 CurrentPos = mazeData->Start;
     Vector2 Dir; Dir.x = 0; Dir.y = 1;
 
     bool Fill = true;
-    while (CurrentPos.x != MazeData->End.x || CurrentPos.y != MazeData->End.y)
+    while (CurrentPos.x != mazeData->End.x || CurrentPos.y != mazeData->End.y)
     {
-        NextStep(MazeData, file, &CurrentPos, &Dir, Fill);
+        NextStep(mazeData, file, &CurrentPos, &Dir, Fill);
 
-        if(Fill && (CurrentPos.x == MazeData->End.x && CurrentPos.y == MazeData->End.y))
+        if(Fill && (CurrentPos.x == mazeData->End.x && CurrentPos.y == mazeData->End.y))
         {
             Fill = false;
-            CurrentPos = MazeData->Start;
+            CurrentPos = mazeData->Start;
             Dir.x = 0; Dir.y = 1;
         }
     }

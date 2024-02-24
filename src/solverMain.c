@@ -8,7 +8,7 @@ int main(int argc, char** argv)
     ReadMaze(argv[1], &MazeData);
 
 
-    RightHandSolve(&MazeData);
+    DeadEndSolve(&MazeData);
     //WriteMaze(&MazeData);
     
     free(MazeData.Maze);

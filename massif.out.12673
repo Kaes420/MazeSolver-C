@@ -1,0 +1,110 @@
+desc: (none)
+cmd: ./solver ../Files/maze1024.txt
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=177965
+mem_heap_B=472
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=178590
+mem_heap_B=4568
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=31774491
+mem_heap_B=135896
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=884329688
+mem_heap_B=135896
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=peak
+n3: 135896 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 131328 0x109DAE: ReadMaze (in /home/kacper/Pulpit/MazeSolver/solver)
+  n0: 131328 0x109FE6: main (in /home/kacper/Pulpit/MazeSolver/solver)
+ n1: 4096 0x48DEBA3: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 4096 0x48EDCDF: _IO_doallocbuf (genops.c:347)
+   n1: 4096 0x48ECCDB: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:485)
+    n1: 4096 0x48EDD95: _IO_default_uflow (genops.c:362)
+     n1: 4096 0x109D03: SetMazeRect (in /home/kacper/Pulpit/MazeSolver/solver)
+      n1: 4096 0x109D66: ReadMaze (in /home/kacper/Pulpit/MazeSolver/solver)
+       n0: 4096 0x109FE6: main (in /home/kacper/Pulpit/MazeSolver/solver)
+ n0: 472 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=5
+#-----------
+time=884329688
+mem_heap_B=131800
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=884329818
+mem_heap_B=131328
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=884329883
+mem_heap_B=131800
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=4251989697
+mem_heap_B=135896
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=4730263735
+mem_heap_B=131800
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=4730263865
+mem_heap_B=131328
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=4730263907
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty

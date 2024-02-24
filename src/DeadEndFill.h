@@ -4,6 +4,6 @@
 #include "structs.h"
 #include "Maze.h"
 
-void RightHandSolve(MazeData* MazeData);
+void DeadEndSolve(MazeData* MazeData);
 
 #endif
