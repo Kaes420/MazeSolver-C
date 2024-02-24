@@ -1,5 +1,5 @@
-#ifndef _RIGHT_HAND_H
-#define _RIGHT_HAND_H
+#ifndef _DEAD_END_FILL_H
+#define _DEAD_END_FILL_H
 
 #include "structs.h"
 #include "Maze.h"

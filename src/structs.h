@@ -18,18 +18,4 @@ typedef struct MazeData
     Vector2 Start, End;
 } MazeData;
 
-typedef struct AstarNode 
-{
-    Vector2 Pos;
-    struct AstarNode* Parent;
-    bool Walkable;
-    int gCost, hCost;
-} AstarNode;
-
-typedef struct AstarNodeElem
-{
-    AstarNode* Node;
-    struct AstarNodeElem* Next;
-} AstarNodeElem;
-
 #endif
