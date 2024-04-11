@@ -34,4 +34,22 @@ typedef struct AstarNodeElem
     struct AstarNodeElem* Next;
 } AstarNodeElem;
 
+typedef struct BinFileHeader
+{
+    int FileId;
+    char Escape;
+    short Columns;
+    short Lines;
+    short StartX;
+    short StartY;
+    short EndX;
+    short EndY;
+    char Reversed[12];
+    int Counter;
+    int SolutionOffset;
+    char Separator;
+    char Wall;
+    char Path;
+} BinFileHeader;
+
 #endif

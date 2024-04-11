@@ -2,7 +2,6 @@
 #define _MAZE_H
 
 #include "structs.h"
-#include "BinMaze.h"
 
 void BlockToString(unsigned int block, char* str);
 
@@ -15,5 +14,9 @@ void WriteMaze(MazeData* mazeData);
 char GetMazeCell(MazeData* mazeData, int xPos, int yPos);
 
 void SetMazeCell(MazeData* mazeData, int xPos, int yPos, char value);
+
+void ReadBinMaze(char* filename, MazeData* mazeData);
+
+void WriteBinMaze(char* oldFilename);
 
 #endif
