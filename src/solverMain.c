@@ -11,7 +11,7 @@ int main(int argc, char** argv)
     MazeData MazeData;
     ReadMaze(argv[1], &MazeData);
 
-    //DeadEndSolve(&MazeData);
+    DeadEndSolve(&MazeData);
     //AstarSolve(&MazeData);
     //WriteMaze(&MazeData);
     
@@ -19,5 +19,5 @@ int main(int argc, char** argv)
 
     gettimeofday(&stop, NULL);
 
-    printf("Czas: %0.3lf", ((double)((stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec)) / 1000);
+    printf("Czas: %0.3lf\n", ((double)((stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec)) / 1000);
 }

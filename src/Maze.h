@@ -2,6 +2,7 @@
 #define _MAZE_H
 
 #include "structs.h"
+#include "BinMaze.h"
 
 void BlockToString(unsigned int block, char* str);
 

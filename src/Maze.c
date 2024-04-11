@@ -95,6 +95,16 @@ void SetMazeRect(FILE * file, MazeData* mazeData)
 
 void ReadMaze(char* filename, MazeData* mazeData)
 {
+    char subbuff[6];
+    memcpy(subbuff, &filename[strlen(filename)- 4], 4);
+    subbuff[5] = '\0';
+    
+    if(strcmp(subbuff, ".bin") == 0)
+    {
+        ReadBinMaze(filename, mazeData);
+        return;
+    }
+
     FILE* file = fopen(filename, "r");
 
     SetMazeRect(file, mazeData);
